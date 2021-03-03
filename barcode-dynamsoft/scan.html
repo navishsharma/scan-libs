@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <div id="div-video-container">
+        <video class="dbrScanner-video" playsinline="true"></video>
+    </div>
+    <div id="result"></div>
+    <div id="time"></div>
+    <!--
+        Please visit https://www.dynamsoft.com/CustomerPortal/Portal/TrialLicense.aspx to get trial license.
+    -->
+    <script src="https://cdn.jsdelivr.net/npm/keillion-dynamsoft-javascript-barcode@0.20201124110923.0/dist/dbr.js"
+        data-productKeys="t0076xQAAAIoSkd9hSgLZuTmzqSGw5WrYJcRwOxQXSHzNLRTFZ/Cb6juBjBKUPL7lsOMjZuF33XlJ/V4rf58yYff9XGfQWMZ2uuUECFEpZw==">
+    </script>
+    <script>
+        let scanner = null;
+        (async () => {
+            scanner = await Dynamsoft.DBR.BarcodeScanner.createInstance();
+            let runtimeSettings = await scanner.getRuntimeSettings();
+            // runtimeSettings.barcodeFormatIds = Dynamsoft.DBR.EnumBarcodeFormat.BF_ONED | Dynamsoft.DBR.EnumBarcodeFormat
+            //     .BF_QR_CODE;
+            // await scanner.updateRuntimeSettings(runtimeSettings);
+            // console.log(runtimeSettings);
+            await scanner.setUIElement(document.getElementById('div-video-container'));
+            scanner.onFrameRead = results => {
+                if (results && results.length) {
+                    console.log(results);
+                    document.getElementById('result').innerHTML = results[0].barcodeText;
+                }
+            };
+            scanner.onUnduplicatedRead = (txt, result) => {
+                alert(txt);
+            };
+            let t0 = performance.now();
+            await scanner.show();
+            let t1 = performance.now();
+            document.getElementById('time').innerHTML = t1 - t0 + "ms";
+        })();
+    </script>
+</body>
+
+</html>
