@@ -8,6 +8,7 @@
 
 <body>
     <video id="preview"></video>
+    <div id="result"></div>
     <script type="text/javascript">
         let opts = {
             // Whether to scan continuously for QR codes. If false, use scanner.scan() to manually scan.
@@ -42,11 +43,11 @@
         };
         let scanner = new Instascan.Scanner(opts);
         scanner.addListener('scan', function (content) {
-            console.log(content);
+            document.getElementById("result").innerHTML = content;
         });
         Instascan.Camera.getCameras().then(function (cameras) {
             if (cameras.length > 0) {
-                scanner.start(cameras[0]);
+                scanner.start(cameras[1]);
             } else {
                 console.error('No cameras found.');
             }
