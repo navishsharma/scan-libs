@@ -63,7 +63,6 @@
 
                 console.log("Initialization finished. Ready to start");
                 Quagga.start();
-
                 // Set flag to is running
                 _scannerIsRunning = true;
             });
@@ -115,7 +114,7 @@
 
             Quagga.onDetected(function (result) {
                 console.log("Barcode detected and processed : [" + result.codeResult.code + "]", result);
-                document.getElementById("result").innerHTML = result.codeResult.code;
+                alert(result.codeResult.code);
                 // Quagga.stop();   
             });
         }
