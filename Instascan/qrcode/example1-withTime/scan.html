@@ -10,6 +10,7 @@
     <video id="preview"></video>
     <div id="result"></div>
     <div id="time"></div>
+	<input type="button" id="btn" value="Start the scanner" />
     <script type="text/javascript">
         let opts = {
             // Whether to scan continuously for QR codes. If false, use scanner.scan() to manually scan.
@@ -42,19 +43,40 @@
             // increases CPU usage but makes scan response faster. Default 1 (i.e. analyze every frame).
             scanPeriod: 1
         };
+		//var _scannerIsRunning = false;
+		function startScanner() {
         let scanner = new Instascan.Scanner(opts);
         scanner.addListener('scan', function (content) {
             document.getElementById("result").innerHTML = content;
+			alert("Barcode " +content +" \n Time "+ document.getElementById("time").innerHTML);
+			this._camera.stop();
         });
         Instascan.Camera.getCameras().then(function (cameras) {
             if (cameras.length > 0) {
                 scanner.start(cameras[0]);
+				//_scannerIsRunning = true;
             } else {
                 console.error('No cameras found.');
             }
         }).catch(function (e) {
             console.error(e);
         });
+	}
+
+	document.getElementById("btn").addEventListener("click", function () {
+          startScanner();
+        }, false);
+
+		// Start/stop scanner
+        // document.getElementById("btn").addEventListener("click", function () {
+        //     if (_scannerIsRunning) {
+        //         _scannerIsRunning = false;
+        //         //this._camera.stop();
+        //     } else {
+        //         startScanner();
+        //     }
+        // }, false);
+
     </script>
 
     <!-- <script async src="zxing1.js"></script>
