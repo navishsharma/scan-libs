@@ -7,9 +7,10 @@
 </head>
 
 <body>
+	<h2>Scanning via InstaScan (QR)</h2>
     <video id="preview"></video>
-    <div id="result"></div>
-    <div id="time"></div>
+	<div id="resultDiv"><input type="hidden" id="result"/></div>
+    <div id="timeDiv"><input type="hidden" id="time"/></div>
 	<input type="button" id="btn" value="Start the scanner" />
     <script type="text/javascript">
         let opts = {
@@ -48,7 +49,7 @@
         let scanner = new Instascan.Scanner(opts);
         scanner.addListener('scan', function (content) {
             document.getElementById("result").innerHTML = content;
-			alert("Barcode " +content +" \n Time "+ document.getElementById("time").innerHTML);
+			alert("Barcode " +content +" \n Time  "+ document.getElementById("time").innerHTML + " ms");
 			this._camera.stop();
         });
         Instascan.Camera.getCameras().then(function (cameras) {

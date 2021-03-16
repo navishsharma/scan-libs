@@ -2,11 +2,12 @@
 <html>
 
 <body>
+    <h2>Scanning via Dynamosoft</h2>
     <div id="div-video-container">
         <video class="dbrScanner-video" playsinline="true"></video>
     </div>
-    <div id="result"></div>
-    <div id="time"></div>
+    <div id="resultDiv"><input type="hidden" id="result"/></div>
+    <div id="timeDiv"><input type="hidden" id="time"/></div>
     <input type="button" id="btn" value="Start the scanner" />
     <!--
         Please visit https://www.dynamsoft.com/CustomerPortal/Portal/TrialLicense.aspx to get trial license.
@@ -19,7 +20,7 @@
         function startScanner() {
         (async () => {
             scanner = await Dynamsoft.DBR.BarcodeScanner.createInstance();
-            
+
             let runtimeSettings = await scanner.getRuntimeSettings();
             runtimeSettings.barcodeFormatIds = Dynamsoft.DBR.EnumBarcodeFormat.BF_ONED ;
             //     .BF_QR_CODE;
@@ -37,17 +38,15 @@
                     let t1 = performance.now();
                     console.log("Time "+ (t1-t0));
                     document.getElementById('time').innerHTML = t1-t0;
-                    
+                    alert("Barcode "+ results[0].barcodeText + "\nTime  "+ (t1-t0) + " ms");
+                    scanner.hide();
                 }
             };
             scanner.onUnduplicatedRead = (txt, result,time) => {
-                alert(txt +"\n Time"+ document.getElementById('time').innerHTML);
+                alert(txt +"\n Time"+ document.getElementById('time').innerHTML + " ms");
                 scanner.hide();
             };
-             
-            
-             
-       
+
         })();
     }
          // Start/stop scanner

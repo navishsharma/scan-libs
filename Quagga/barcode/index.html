@@ -9,6 +9,7 @@
 </head>
 
 <body>
+    <h2>Scanning via Quagga</h2>
     <div id="scanner-container"></div>
     <input type="button" id="btn" value="Start the scanner" />
     <div id="result"></div>
@@ -68,7 +69,6 @@
             });
 
             Quagga.onProcessed(function (result) {
-                
                 // var drawingCtx = Quagga.canvas.ctx.overlay,
                 //     drawingCanvas = Quagga.canvas.dom.overlay;
 
@@ -119,8 +119,9 @@
                 console.log("Barcode detected and processed : [" + result.codeResult.code + "]", result);
                 var t1 = performance.now();
                 console.log("Time "+(t1-t0)+ " milliseconds");
-                alert(result.codeResult.code + "  Time  " + (t1-t0));
-                Quagga.stop();   
+                alert(result.codeResult.code + "  Time  " + (t1-t0) + " ms");
+                Quagga.stop();
+                window.location.reload();   
             });
         }
         
