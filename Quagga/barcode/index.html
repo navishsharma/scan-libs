@@ -10,11 +10,11 @@
 
 <body>
     <div id="scanner-container"></div>
-    <input type="button" id="btn" value="Start/Stop the scanner" />
+    <input type="button" id="btn" value="Start the scanner" />
     <div id="result"></div>
     <script>
         var _scannerIsRunning = false;
-
+        var t0;
         function startScanner() {
             Quagga.init({
                 inputStream: {
@@ -109,26 +109,34 @@
                 //         });
                 //     }
                 // }
+                
+                t0 = performance.now();
             });
 
-
+            
             Quagga.onDetected(function (result) {
+               
                 console.log("Barcode detected and processed : [" + result.codeResult.code + "]", result);
-                alert(result.codeResult.code);
-                // Quagga.stop();   
+                var t1 = performance.now();
+                console.log("Time "+(t1-t0)+ " milliseconds");
+                alert(result.codeResult.code + "  Time  " + (t1-t0));
+                Quagga.stop();   
             });
         }
-
-
-        // Start/stop scanner
+        
         document.getElementById("btn").addEventListener("click", function () {
-            if (_scannerIsRunning) {
-                _scannerIsRunning = false;
-                Quagga.stop();
-            } else {
-                startScanner();
-            }
+          startScanner();
         }, false);
+
+        // // Start/stop scanner
+        // document.getElementById("btn").addEventListener("click", function () {
+        //     if (_scannerIsRunning) {
+        //         _scannerIsRunning = false;
+        //         Quagga.stop();
+        //     } else {
+        //         startScanner();
+        //     }
+        // }, false);
     </script>
 </body>
 

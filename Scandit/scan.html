@@ -159,11 +159,11 @@
 
   <body>
     <div id="barcode-picker" class="scanner"></div>
-
+    <input type="button" id="btn" value="Start the scanner" />
     <script>
       const videoFit = ScanditSDK.BarcodePicker.ObjectFit.CONTAIN;
       const key = "AU7PsjhBGFFCH8IGFh6dCNsB24iwEyC643XeSkxkrFMOXor/ZF/hRgZM2mNbekru8nZSAAMBHbqvcrddtEmyip53W2H1EKdX7XS0NkNoQBmOfdudRX09trds4rfgPDnqeTtJA1VAJTznAHc6zhX+IezQ/h/EiHXcrlUt5AEC/zcwouFKukhGG0O31W7m87xdnmPjpFImryFVA15IDauEQ/+ztOFkw/UxPAn/wig3OsNmt7VrcYCKktC6AIsIJ09kE+s1dBaHUn2UA/ZW3XkMOuIopTAOe92Cv8GgN9q3o/lkvqBYa23/fBxzxYU3Xvufw0aLfbjPmYsFkfrjeuJJuSb2fuoFeRKNJDinSLOscd3YQlVx+cFOxeF0TKFFEes+YppzQau6bm+NhEvKqHroZWUCtqLDvH7DCYBZyObS/VySkxAHaagbALPUt+ABrzlxl0Xtbj2sLMyKWAbTJ9kEq9NydGaI2N4vQBuDsaNLtswd0qinLBrunFtMkGJvvMEO9XZ96MeJoStW8IR/z0RW/Srw+4Yec9pw4PWXKq8ofM3QE/n9qCGDMciC95YZ0NZB1S7W/0BbYPW+Uu8lhkSgF7+WTB/56wija7Xhd8bi2o7O5P7UbKp4VV6RUG23BPJO6BNMcBD4cBVS43h1DMzMXj3/Fq9UF0kh75wcpIKw9SsxUZMDYnrR7G9WJWAe4T8UdGIx1gkXJjwkPPWrpkqbcJC7y6/jCGfPJaNSLRoNuNNybKKYyBV6wCpUAOfoeG+BMqzEhyYsoA4eIWRU/fTh/mGBwUjiIJiUlWWVERrSAWjWHkZmg05Tl43GVhI=";
-      
+      var _scannerIsRunning = false;
       // Create the code location canvas element
       const codeLocationCanvasElement = document.createElement("canvas");
       codeLocationCanvasElement.classList.add("code-location-canvas");
@@ -186,7 +186,7 @@
         codeLocationCanvasContext.fillStyle = "rgba(46, 192, 204, 0.3)";
         codeLocationCanvasContext.fill();
       }
-
+      function startScanner() {
       // Configure the library and activate it with a license key
       ScanditSDK.configure(key, {
         // Configure the engine location, as explained on http://docs.scandit.com/stable/web/index.html
@@ -205,9 +205,15 @@
               enabledSymbologies: ["ean8", "ean13", "upca", "upce", "code128", "code39", "itf", "data-matrix", "qr"],
               codeDuplicateFilter: 1000,
             });
+            let t0 = performance.now();
+            _scannerIsRunning = true;
             barcodePicker.applyScanSettings(scanSettings);
             barcodePicker.on("scan", function (scanResult) {
+              let t1 = performance.now();
               console.log(scanResult);
+              alert("Barcode "+scanResult.barcodes[0].data + "\nTime  "+ (t1-t0));
+              console.log("Time  "+ (t1-t0))
+              barcodePicker.pauseScanning(true);
               // Erase previous code locations
               codeLocationCanvasContext.clearRect(
                 0,
@@ -237,6 +243,21 @@
         .catch(function (error) {
           alert(error);
         });
+      }
+
+      document.getElementById("btn").addEventListener("click", function () {
+          startScanner();
+        }, false);
+
+        // Start/stop scanner
+        // document.getElementById("btn").addEventListener("click", function () {
+        //     if (_scannerIsRunning) {
+        //         _scannerIsRunning = false;
+        //         BarcodePicker.pauseScanning(true);
+        //     } else {
+        //         startScanner();
+        //     }
+        // }, false);
     </script>
   </body>
 </html>
