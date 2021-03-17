@@ -9,8 +9,9 @@
 <body>
 	<h2>Scanning via InstaScan (QR)</h2>
     <video id="preview"></video>
-	<div id="resultDiv"><input type="hidden" id="result"/></div>
-    <div id="timeDiv"><input type="hidden" id="time"/></div>
+	
+	<div id="resultDiv" ><input type="hidden" id="result"/></div>
+    <div id="time" style="visibility: hidden"><input type="hidden" id="time"/></div>
 	<input type="button" id="btn" value="Start the scanner" />
     <script type="text/javascript">
         let opts = {
@@ -91,15 +92,12 @@
 			}
 		};
 		tick();
-
 		function testZXing() {
 			var img = new Image;
 			// img.src = 'Qr-10.png';
 			img.onload = function () {
-
 				var width = Math.floor(this.width),
 					height = Math.floor(this.height);
-
 				var canvas = document.createElement('canvas');
 				canvas.style.display = 'block';
 				canvas.width = width;
@@ -110,13 +108,10 @@
 				var imageData = ctx.getImageData(0, 0, width, height);
 				var idd = imageData.data;
 				document.body.appendChild(canvas);
-
 				var image = ZXing._resize(width, height);
-
 				for (var i = 0, j = 0; i < idd.length; i += 4, j++) {
 					ZXing.HEAPU8[image + j] = idd[i];
 				}
-
 				var err = ZXing._decode_qr();
 				var res = ZXing._decode_results[0];
 				var resultString = '';
@@ -133,9 +128,7 @@
 					ctx.stroke();
 					console.log("result", resultString);
 				}
-
 				document.body.appendChild(document.createTextNode(err ? ("error: " + err) : resultString));
-
 				for (var k = 0; k < 50; k++) {
 					for (var i = 0, j = 0; i < idd.length; i += 4, j++) {
 						ZXing.HEAPU8[image + j] = idd[i];
@@ -143,35 +136,30 @@
 					err = ZXing._decode_qr_multi();
 					err = ZXing._decode_qr();
 				}
-
 				console.time("decode QR");
 				for (var i = 0, j = 0; i < idd.length; i += 4, j++) {
 					ZXing.HEAPU8[image + j] = idd[i];
 				}
 				err = ZXing._decode_qr();
 				console.timeEnd("decode QR");
-
 				console.time("decode QR multi");
 				for (var i = 0, j = 0; i < idd.length; i += 4, j++) {
 					ZXing.HEAPU8[image + j] = idd[i];
 				}
 				err = ZXing._decode_qr_multi();
 				console.timeEnd("decode QR multi");
-
 				console.time("decode any");
 				for (var i = 0, j = 0; i < idd.length; i += 4, j++) {
 					ZXing.HEAPU8[image + j] = idd[i];
 				}
 				err = ZXing._decode_any();
 				console.timeEnd("decode any");
-
 				console.time("decode multi");
 				for (var i = 0, j = 0; i < idd.length; i += 4, j++) {
 					ZXing.HEAPU8[image + j] = idd[i];
 				}
 				err = ZXing._decode_multi();
 				console.timeEnd("decode multi");
-
 			};
 		};
 	</script> -->

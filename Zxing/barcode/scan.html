@@ -78,6 +78,7 @@
 
                     document.getElementById('resetButton').addEventListener('click', () => {
                         document.getElementById('result').textContent = '';
+                        document.getElementById('time').textContent = '';
                         codeReader.reset();
 
                         console.log('Reset.')
@@ -91,7 +92,7 @@
             function scan(devideId) {
                 codeReader.decodeFromInputVideoDevice(devideId, 'video').then((result) => {
                     document.getElementById('result').textContent = result.text
-                    scan();
+                    //scan();
                 }).catch((err) => {
                     console.error(err)
                     document.getElementById('result').textContent = err
