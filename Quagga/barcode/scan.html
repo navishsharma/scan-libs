@@ -66,6 +66,7 @@
                 Quagga.start();
                 // Set flag to is running
                 _scannerIsRunning = true;
+                t0 = performance.now();
             });
 
             Quagga.onProcessed(function (result) {
@@ -110,7 +111,7 @@
                 //     }
                 // }
                 
-                t0 = performance.now();
+                //t0 = performance.now();
             });
 
             
